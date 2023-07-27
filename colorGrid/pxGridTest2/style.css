@@ -27,17 +27,13 @@ body {
 
 
 /*CANVAS*/
-#container {
+.container {
     position: relative;
-    display: inline-block;
     background-color: var(--secondary);
     margin: auto;
     top: 50%;
     transform: translate(0, -50%);
-    width: 3000px;
-    height: 3000px;
+    width: 700px;
+    height: 700px;
 }
 
-canvas {
-
-}
