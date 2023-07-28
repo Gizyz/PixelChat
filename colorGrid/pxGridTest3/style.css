@@ -1,0 +1,51 @@
+:root {
+    --text: #070e18;
+    --background: #fafafa;
+    --primary: #8e9195;
+    --secondary: #f2f4d7;
+    --accent: #c84137;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    height: 100%;
+}
+body {
+    position: absolute;
+    background-color: var(--background);
+    height: 100%;
+    width: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    
+}
+
+
+
+
+
+/*CANVAS*/
+.container {
+    position: relative;
+    background-color: var(--secondary);
+    margin: auto;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 700px;
+    height: 700px;
+}
+canvas {
+    image-rendering: optimizeSpeed;                 /* Older versions of FF */
+    image-rendering: -moz-pixelated;              /* FF 6.0+ */
+    image-rendering: -webkit-optimize-contrast;     /* Webkit (non standard naming) */
+    image-rendering: -o-pixelated;                /* OS X & Windows Opera (12.02+ */
+    image-rendering: pixelated;                   /* Possible future browsers. */
+    -ms-interpolation-mode: nearest-neighbor;       /* IE (non standard naming) */
+
+    width: 700px;
+    height: 700px;
+
+}
+
