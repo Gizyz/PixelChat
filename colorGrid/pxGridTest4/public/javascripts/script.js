@@ -28,11 +28,8 @@ class Canvas {
         ctx.fillStyle = `rgb(0,0,0)`;
         ctx.fillRect(0,0, this.canvasW, this.canvasH);
 
-        let img = new Image();
-        img.src=getCanvas(e);
-        console.log(getCanvas(e))
-        ctx.drawImage(img,0,0);
-        }
+        getCanvas(e);
+    }
     mMove(e) {      
         let x = Math.trunc((e.clientX - ((window.innerWidth - this.canvasW)/2))/(this.canvasW/this.cWidth))
         let y = Math.trunc((e.clientY - ((window.innerHeight - this.canvasH)/2))/(this.canvasH/this.cHeight))
@@ -71,7 +68,7 @@ async function getCanvas(e) {
     e.preventDefault();
     const res = await fetch(baseUrl)
         .then((response) => {
-            
+            return response.json();
         })
         .then((data) => {
             console.log(data);
@@ -97,10 +94,9 @@ async function postCanvas(e) {
       }
       
     fetch(baseUrl, fetchData)
-    .then(() => {
-
+    .then(function() {
+        
     });
-
 }
 
 
