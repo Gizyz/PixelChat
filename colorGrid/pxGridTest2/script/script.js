@@ -37,12 +37,10 @@ class Canvas {
             r = tm*y*3;
             g = -tm*y*3;
 
-
-
-
             for (let x=0; x < this.cWidth/this.pxSize; x++) {
 
-                b = (Math.cos(t+Math.tan(x*t*y)))*255;
+                b = (Math.sin(y+t)*255);
+                //b = (Math.cos(t+Math.tan(x*t*y)))*255;
 
 
                 ctx.fillStyle = `rgb(${r},${g},${b})`;
@@ -57,7 +55,7 @@ const c = new Canvas(100, 100, 1);
 c.canvasInit();
 
 let t=0;
-window.setInterval(() => {t+=0.1; c.update(t)}, 100);
+window.setInterval(() => {t+= .1; c.update(t)}, 100);
 
 let run = true;
 

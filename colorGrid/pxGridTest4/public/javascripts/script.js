@@ -18,7 +18,7 @@ class Canvas {
 
     }
 
-    canvasInit() {
+    canvasInit(e) {
         console.log(`canvas width: ${this.cWidth} || canvas height: ${this.cHeight}`)        
         canvas.width = this.cWidth;
         canvas.height = this.cHeight;
@@ -28,7 +28,7 @@ class Canvas {
         ctx.fillStyle = `rgb(0,0,0)`;
         ctx.fillRect(0,0, this.canvasW, this.canvasH);
 
-
+        getCanvas(e);
     }
     mMove(e) {      
         let x = Math.trunc((e.clientX - ((window.innerWidth - this.canvasW)/2))/(this.canvasW/this.cWidth))
@@ -66,31 +66,44 @@ const baseUrl = 'http://localhost:3000/postPull'
 
 async function getCanvas(e) {
     e.preventDefault();
-    const res = await fetch(baseUrl, 
-        {
-            method: 'GET'
+    const res = await fetch(baseUrl)
+        .then((response) => {
+            return response.json();
         })
-        console.log(res);
+        .then((data) => {
+            console.log(data);
+        })
+
+    
 }
 
 async function postCanvas(e) {
     e.preventDefault();
     let canvasUrl = canvas.toDataURL("image/jpeg", 1.0);
-    const res = await fetch(baseUrl, 
-        {
-            method: 'POST',
-            body: canvasUrl
+    let data = {
+        timestamp: Date.now(),
+        data: canvasUrl
+      }
+      
+      let fetchData = {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+          'Content-Type': 'application/json; charset=UTF-8'
         })
+      }
+      
+    fetch(baseUrl, fetchData)
+    .then(function() {
+        
+    });
 }
 
 
 const c = new Canvas(20, 20, 1);
-c.canvasInit();
 
-let t=0;
-
-//window.setInterval(() => {t+=0.1; c.update(t)}, 100);
-window.addEventListener("mousemove", (event) => {c.mMove(event)})
-window.addEventListener("resize", () => {c.canvasInit()})
-window.addEventListener("click", (e) => {c.draw(); getCanvas(e);})
+window.addEventListener("load", (e) => {c.canvasInit(e)});
+window.addEventListener("resize", (e) => {c.canvasInit(e)})
+window.addEventListener("mousemove", (e) => {c.mMove(e)})
+window.addEventListener("click", (e) => {c.draw(); postCanvas(e);})
 

@@ -6,15 +6,14 @@ let fs = require('fs')
 
 
 router.get("/", (req, res) => {
-    res.send(`postin`);
-    fs.readFile('./public/images/canvas.txt', (err, data) => {
+    fs.readFile('./public/images/data.json', (err, data) => {
         if (err) throw err; 
-        else console.log(data)
-        res.send(`postin ${data}`);
+        else res.send(data);
+        
     });
 })
 
 router.post("/", async (req, res) => {
-    fs.writeFile('./public/images/canvas.txt', req);
+    fs.writeFile('./public/images/data.json', JSON.stringify(req.body), (err) => err && console.error(err));
 })
 module.exports = router;
