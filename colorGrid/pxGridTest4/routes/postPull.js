@@ -1,6 +1,9 @@
-let express = require('express');
-let router = express.Router();
-let fs = require('fs')
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
+
+
+
 
 
 
@@ -8,12 +11,15 @@ let fs = require('fs')
 router.get("/", (req, res) => {
     fs.readFile('./public/images/data.json', (err, data) => {
         if (err) throw err; 
-        else res.send(data);
-        
-    });
+        else res.send(JSON.parse(data));       
+    }); 
 })
 
 router.post("/", async (req, res) => {
-    fs.writeFile('./public/images/data.json', JSON.stringify(req.body), (err) => err && console.error(err));
+    if (req.body) {
+    fs.writeFile('./public/images/data.json', JSON.stringify(req.body), (err) => {res.status(200, err)});
+    res.send('stored on server')
+    } else {res.send('no data posted')}
+
 })
 module.exports = router;
