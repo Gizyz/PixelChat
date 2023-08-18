@@ -1,13 +1,14 @@
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d");
+const colorInput = document.getElementById("color")
+let RGB;
 let socket = io();
-
+let mPos = {x: 0, y: 0};
 
 class Canvas {
     cWidth;
     cHeight;
     pxSize;
-    mPos;
     rgb;    
 
     constructor(cWidth, cHeight, pxSize) {
@@ -15,7 +16,7 @@ class Canvas {
         this.cHeight = cHeight;
         this.pxSize = pxSize;
         this.rgb = {r: 0, g: 0, b:0};
-        this.mPos = {x: 0, y: 0};
+        mPos = {x: 0, y: 0};
 
     }
 
@@ -37,15 +38,22 @@ class Canvas {
         let x = Math.trunc((e.clientX - ((window.innerWidth - this.canvasW)/2))/(this.canvasW/this.cWidth))
         let y = Math.trunc((e.clientY - ((window.innerHeight - this.canvasH)/2))/(this.canvasH/this.cHeight))
 
-        this.mPos = {x:  x, y: y}
+        mPos = {x:  x, y: y}
         //console.log(this.mPos)
     }
+    color() {
+        let hex = colorInput.value
+        let R = parseInt(hex.substr(1, 2), 16)
+        let G = parseInt(hex.substr(3, 2), 16)
+        let B = parseInt(hex.substr(5, 2), 16)
+        RGB = this.rgb = {r: R, g: G, b: B}
+    }
     draw() {
-        this.rgb = {r: 255, g: 255, b: 255}
+     
 
         ctx.fillStyle = `rgb(${this.rgb.r},${this.rgb.g},${this.rgb.b})`;
-        ctx.fillRect(this.mPos.x,this.mPos.y, this.pxSize,this.pxSize);
-
+        ctx.fillRect(mPos.x,mPos.y, this.pxSize,this.pxSize);
+        
     }
 
     update() {
@@ -82,7 +90,10 @@ async function postCanvas(e) {
     let canvasUrl = canvas.toDataURL("image/jpeg", 1);
     let data = {
         timestamp: Date.now(),
-        canvasUrl
+        xcord: mPos.x,
+        ycord: mPos.y,
+        rgb: RGB
+        //,canvasUrl
       }
       
       let fetchData = {
@@ -108,7 +119,7 @@ const c = new Canvas(200, 200, 4);
 window.addEventListener("load", (e) => {c.canvasInit(e)});
 window.addEventListener("resize", (e) => {c.canvasInit(e)})
 window.addEventListener("mousemove", (e) => {c.mMove(e)})
-window.addEventListener("click", (e) => {c.draw(); postCanvas(e);})
+window.addEventListener("click", (e) => {if (mPos.x >= 0 && mPos.y >= 0) {c.color(); c.draw(); postCanvas(e);}})
 
 socket.on("post", (e) => {
     c.canvasInit(e)
